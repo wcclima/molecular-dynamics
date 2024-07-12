@@ -115,12 +115,11 @@ class MolecularDynamicsBHW(object):
             raise MissingPrecedingMethodCallError(
                 "Error: 'generate_initial_conditions' must be called before 'generate_dynamics' is called."
             )
-
+        self.total_time_steps = total_time_steps
         self.dynamics_flag = True
 
         return dynamics(
-            self, 
-            total_time_steps,
+            self,
             shortest_distance_x_pbc,
             periodic_boundary_condition_x,
             bottom_wall_force
