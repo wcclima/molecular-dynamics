@@ -53,6 +53,7 @@ class MolecularDynamicsBHW(object):
 
         self.gas_state = None
         self.vel_hist = None
+        self.brownian_particles_state = None
 
     
     def display_parameters(self):
