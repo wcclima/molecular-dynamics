@@ -46,9 +46,29 @@ Description of the module `molecular_dynamics` architecture.
 - `molecular_dynamics/_stats_func.py`: functions implementing the temperature measurement by generating the velocity distribution and fitting it with the Maxwell-Boltzmann distribution or using the equipartition theorem, used in the `measure_kT` and `generate_velocity_distribution` methods.
 - `molecular_dynamics/_thermostat_func.py`: functions that instantaneously change the molecules's velocities, thus changing the gas temperature after interation, used in the `change_temperature` method.
 
-## 4 - Results
+## 4 - Features
 
-## 5 - References
+## 5 - Results
+
+- Animation of a gas of density $\rho = 0.25$ in a box with side $L = 20$ and initial velocity with $\langle v^2_x\rangle = \langle v^2_y\rangle = 100$. PBCs, time step $\Delta t = 0.005$ and $50000$ total time steps were assumed. 
+
+https://github.com/user-attachments/assets/5a091d87-6e5f-4160-8818-44afe17d7e01
+
+- Animation velocity modulus distribution of the above gas. The distribution is averaged over time to mitigate statistical fluctuations. The gas temperature at the equilibrium is $kT = 1.25$.
+
+https://github.com/user-attachments/assets/0a834874-5fd1-4d25-b90a-fa9deaceb0dc
+
+- Animation of a gas of density $\rho = 0.25$ in a box with side $L = 20$ and initial velocity with $\langle v^2_x\rangle = \langle v^2_y\rangle = 100$, with a Brownian particle of mass $15.$ and size $\sigma = 1.8$. PBCs, time step $\Delta t = 0.005$ and $50000$ total time steps were assumed. 
+
+https://github.com/user-attachments/assets/1b485cd3-3756-4213-95b5-aede1670d613
+
+- Animation of a gas of density $\rho = 0.25$ in a box with side $L = 20$ and initial velocity with $\langle v^2_x\rangle = \langle v^2_y\rangle = 100$. BHW boundary conditions, gravitational acceleration $g = 0.5$, time step $\Delta t = 0.005$ and $50000$ total time steps were assumed.
+
+https://github.com/user-attachments/assets/d9c7882a-78d2-4929-ad08-d90b95e58ea0
+
+
+
+## 6 - References
 
 1. N. J. Giordano and H Nakanishi, *Computational Physics* (Pearson Prentice Hall, New Jersey, 2006).
 2. R.H. Landau, M.J. Páez and C.C. Bordeianu, *Computation Physics: Problem Solving with Python* (Wiley-VCH, Weinheim, 2015). 
