@@ -7,6 +7,8 @@ The goal of this project is to simulate a gas by modelling its molecules as clas
 
 ## 2 - Repo organisation
 
+**`fortran_codes/`: Older version of the model**
+
 **`notebooks/`: Notebooks demonstrating the simulations**
 - `molecular_dynamics_notebook.ipynb` : Notebook explaining the basic details of the simulation
 - `brownian_motion_notebook.ipynb` : Notebook discussing the Brownian motion implementation
