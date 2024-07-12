@@ -145,12 +145,22 @@ def gas_animation_bhw(
         plt.plot(x_aux, y_aux, ":k")
 
     self.gas_state, = ax.plot([], [], 
-                        marker = "o", 
-                        linestyle = " ", 
-                        markerfacecolor = "cornflowerblue", 
-                        markeredgecolor = "cornflowerblue", 
-                        markersize=5
-                        )
+                              marker = "o", 
+                              linestyle = " ", 
+                              markerfacecolor = "cornflowerblue", 
+                              markeredgecolor = "cornflowerblue", 
+                              markersize=5
+                              )
+
+    self.brownian_particles_state, = ax.plot([], [], 
+                                            marker = "o", 
+                                            linestyle = " ", 
+                                            markerfacecolor = "orange", 
+                                            markeredgecolor = "orange", 
+                                            markersize=9
+                                            )
+
+    self.brownian_motion_track = [ax.plot([], [], color = "tan")[0] for _ in range(self.n_brownian_particles)]
 
     molecular_dynamics_animation = animation.FuncAnimation(
         fig = fig, 
