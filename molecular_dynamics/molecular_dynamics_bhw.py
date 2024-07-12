@@ -45,6 +45,7 @@ class MolecularDynamicsBHW(object):
         self.n_molecules = self.n_cells*self.n_cells
         self.n_gas_molecules = self.n_molecules
         self.n_brownian_particles = 0
+        self.brownian_particle_mass = 1.
         
         self.initial_state_flag = False
         self.dynamics_flag = False
