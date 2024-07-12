@@ -46,14 +46,16 @@ class MolecularDynamicsBHW(object):
         self.n_gas_molecules = self.n_molecules
         self.n_brownian_particles = 0
         self.brownian_particle_mass = 1.
+        self.brownian_particle_size = None
         
         self.initial_state_flag = False
         self.dynamics_flag = False
         self.vel_dist_flag = False
 
         self.gas_state = None
-        self.vel_hist = None
         self.brownian_particles_state = None
+        self.brownian_motion_track = None
+        self.vel_hist = None
 
     
     def display_parameters(self):
@@ -117,11 +119,12 @@ class MolecularDynamicsBHW(object):
             raise MissingPrecedingMethodCallError(
                 "Error: 'generate_initial_conditions' must be called before 'generate_dynamics' is called."
             )
+
         self.total_time_steps = total_time_steps
         self.dynamics_flag = True
 
         return dynamics(
-            self,
+            self, 
             shortest_distance_x_pbc,
             periodic_boundary_condition_x,
             bottom_wall_force
