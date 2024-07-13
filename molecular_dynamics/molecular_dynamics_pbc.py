@@ -19,7 +19,7 @@ class MissingPrecedingMethodCallError(Exception):
         super().__init__(message)
 
  
-__all__ = ["MolecularDynamicsBM"]
+__all__ = ["MolecularDynamicsPBC"]
 
 
 class MolecularDynamicsPBC(object):
