@@ -61,12 +61,13 @@ def animate_gas(
     self.gas_state.set_data(x_coord[self.gas_molecules_index], y_coord[self.gas_molecules_index])
     self.brownian_particles_state.set_data([x_coord[self.brownian_particles_index], y_coord[self.brownian_particles_index]])
 
-    for brownian_particle_i in range(self.n_brownian_particles):
-        x_bm_track = self.data.T[self.brownian_particles_index[brownian_particle_i]][0][[i for i in range(frame_i + 1)]]
-        y_bm_track = self.data.T[self.brownian_particles_index[brownian_particle_i]][1][[i for i in range(frame_i + 1)]]
-        x_bm_track, y_bm_track = mask_periodic_plot(x_bm_track, y_bm_track)
+    if self.track_brownian_particle_flag:
+        for brownian_particle_i in range(self.n_brownian_particles):
+            x_bm_track = self.data.T[self.brownian_particles_index[brownian_particle_i]][0][[i for i in range(frame_i + 1)]]
+            y_bm_track = self.data.T[self.brownian_particles_index[brownian_particle_i]][1][[i for i in range(frame_i + 1)]]
+            x_bm_track, y_bm_track = mask_periodic_plot(x_bm_track, y_bm_track)
     
-        self.brownian_motion_track[brownian_particle_i].set_data(x_bm_track, y_bm_track)
+            self.brownian_motion_track[brownian_particle_i].set_data(x_bm_track, y_bm_track)
     
     return self.gas_state, self.brownian_particles_state, self.brownian_motion_track
 
