@@ -50,6 +50,31 @@ Description of the module `molecular_dynamics` architecture.
 
 ## 4 - Features
 
+- The `Molecular_DynamicsPBC` class:
+  - generates a bi-dimensional gas with periodic boundary conditions on the x- and y-directions;
+  - it accepts one or two molecule species, with the mass and size of the second species scaled with respect to the first species;
+  - the second species can be used to visualise the Brownian motion.
+  - It has the following methods:
+    - `display_parameters`: prints all the relevant parameters for the model initialisation;
+    - `generate_initial_conditions`, generates the gas initial state in a squared lattice or at random positions and with Gaussian dstributed x- and y-velocity components with variance defined by the `initial_temperature` parameter;
+    - `plot_initial_conditions`, plots the initial positions and velocity vectors of the gas molecules;
+    - `plot_initial_force`, plots the initial positions and total force vectors of the gas molecules;
+    - `generates_dynamics`, generates the gas dynamics for a number of steps defined by the `total_time_steps` parameter;
+    - `generate_gas_animation`, animates the gas positions over the course of its evolution and saves it as an `.mp4` file;
+    - `generate_velocity_distribution`, generates the molecules's velocity modulus distribution averaged over time to mitigate statistical fluctuations;
+    - `generate_velocity_distribution_animation`, animates the molecules velocity distribution averaged over time;
+    - `measure_kT`, allows three different methods to measure the gas temperature,
+      - `instantaneous fitting`, which fits the velocity distribution at the final time step with the Maxwell-Boltzmann distribution,
+      - `cummulative_fitting`, which fits the time averaged velocity distribution at the final time step with the Maxwell-Boltzmann distribution,
+      - `equipartition`, which computes the average kinetic energy and used the equipartition theorem to determine the temperature;
+    - `change_temperature`, changes the gas temperature by rescaling the velocity at the current final time step, generating a new dynamics from there and them concatenating the result with the gas past history.
+
+- The `Molecular_DynamicsBHW` class:
+  - generates a bi-dimensional gas with periodic boundary conditions on the x-direction and a bottom hard wall and an open top end in the y-direction;
+  - it accepts one or two molecule species, with the mass and size of the second species scaled with respect to the first species;
+  - it allows for gravitational acceleration.
+  - It has the same methods as the `Molecular_DynamicsPBC` class. 
+
 ## 5 - Results
 
 - Animation of a gas of density $\rho = 0.25$ in a box with side $L = 20$ and initial velocity with $\langle v^2_x\rangle = \langle v^2_y\rangle = 100$. PBCs, time step $\Delta t = 0.005$ and $50000$ total time steps were assumed. 
