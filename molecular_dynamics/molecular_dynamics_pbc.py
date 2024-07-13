@@ -55,6 +55,7 @@ class MolecularDynamicsPBC(object):
         self.dynamics_flag = False
         self.vel_dist_flag = False
         self.measured_kT_flag = False
+        self.track_brownian_particles_flag = None
 
         self.gas_state = None
         self.brownian_particles_state = None
@@ -143,7 +144,8 @@ class MolecularDynamicsPBC(object):
     @typechecked
     def generate_gas_animation(
         self, 
-        exit_file_name: str = "molecular_dynamics.mp4", 
+        exit_file_name: str = "molecular_dynamics.mp4",
+        track_brownian_particle: bool = True,
         fps: Union[float, int] = 50, 
         dpi: Union[float, int] = 150
         ):
@@ -152,6 +154,8 @@ class MolecularDynamicsPBC(object):
             raise MissingPrecedingMethodCallError(
                 "Error: 'generate_dynamics' must be called before 'generate_gas_animation' is called."
             )
+    
+        self.track_brownian_particle_flag = track_brownian_particle
         
         return gas_animation_pbc(
             self, 
