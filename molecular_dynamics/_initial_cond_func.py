@@ -5,7 +5,8 @@ import numpy as np
 from numpy import random
 
 def gaussian_random_array(
-        shape: Union[int, tuple]
+        shape: Union[int, tuple],
+        trials: int,
         ) -> np.ndarray:
 
     """
@@ -15,15 +16,16 @@ def gaussian_random_array(
 
     Keyword arguments:
 
-    shape (int, tuple) -- the shape of the array. 
+    shape (int, tuple) -- the shape of the array
+    trials (int) -- length of the random sequence
     
     """
     s = np.zeros(shape)
     
-    for i in range(20):
+    for i in range(trials):
         s += np.random.rand(shape)
     
-    return s/20. - 0.5
+    return s/trials - 0.5
 
 def generate_initial_conditions(
         self, 
@@ -53,8 +55,8 @@ def generate_initial_conditions(
         self.gas_molecules_index.remove(bp_index)
         self.brownian_particles_index.append(bp_index)
 
-    vx = gaussian_random_array(self.n_molecules)*np.sqrt(self.initial_temperature)
-    vy = gaussian_random_array(self.n_molecules)*np.sqrt(self.initial_temperature)
+    vx = 12.*gaussian_random_array(self.n_molecules, 12)*np.sqrt(self.initial_temperature)
+    vy = 12.*gaussian_random_array(self.n_molecules, 12)*np.sqrt(self.initial_temperature)
     
     cell_array = np.linspace(
         0.5*self.cell_size, 
