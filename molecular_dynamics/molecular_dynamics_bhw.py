@@ -1,3 +1,4 @@
+
 from typeguard import typechecked
 from typing import Union
 
@@ -51,6 +52,7 @@ class MolecularDynamicsBHW(object):
         self.initial_state_flag = False
         self.dynamics_flag = False
         self.vel_dist_flag = False
+        self.measured_kT_flag = False
 
         self.gas_state = None
         self.brownian_particles_state = None
@@ -201,6 +203,8 @@ class MolecularDynamicsBHW(object):
                 "Error: 'generate_velocity_distribution' must be called before 'measure_kT' is called."
             )
         
+        self.measured_kT_flag = True
+        
         return measure_kT(
             self, 
             method
@@ -215,7 +219,12 @@ class MolecularDynamicsBHW(object):
 
         if not self.dynamics_flag:
             raise MissingPrecedingMethodCallError(
-                "Error: 'generate_dynamics' must be called before 'thermostat' is called."
+                "Error: 'generate_dynamics' must be called before 'change_temperature' is called."
+            )
+        
+        if not self.measured_kT_flag:
+            raise MissingPrecedingMethodCallError(
+                "Error: 'measure_kT' must be called before 'change_temperature' is called."
             )
         
         return thermostat(
