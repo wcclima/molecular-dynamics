@@ -1,6 +1,8 @@
 
 import numpy as np
 
+from typing import Tuple
+
 import matplotlib.pyplot as plt
 from matplotlib import animation
 from matplotlib.animation import FuncAnimation
@@ -26,7 +28,23 @@ def init_state(self) -> Figure:
     return self.gas_state, self.brownian_particles_state
 
 
-def mask_periodic_plot(x_coord, y_coord):
+def mask_periodic_plot(
+        x_coord: np.ndarray, 
+        y_coord: np.ndarray
+        ) -> Tuple[np.ndarray, np.ndarray]:
+    
+    """
+    Breaks a trajectory in periodic boundary conditions 
+    by masking its jumps.
+
+    Returns the masked x and y coordinates arrays.
+
+    
+    Keyword arguments:
+        
+    x_coord (np.ndarray) -- the trajectory's x-coordinates
+    y_coord (np.ndarray) -- the trajectory's y-coordinates
+    """
     
     abs_dx = np.abs(np.diff(x_coord))
     abs_dy = np.abs(np.diff(y_coord))
@@ -52,9 +70,10 @@ def animate_gas(
     Returns a figure of the scatter plot of 
     the molecules's positions at the i-th step.
 
+
     Keyword arguments:
         
-    frame_i -- integer, the index of the i-th frame. 
+    frame_i (int) -- the index of the i-th frame 
     """
 
     x_coord, y_coord = self.data[frame_i][0:2]
@@ -76,6 +95,17 @@ def animate_vel_distribution(
         self,
         frame_i: int
         ) -> Figure:
+    """
+    Generates the frames for the velocity distribution 
+    animation.
+
+    Returns a figure of velocity historgram.
+
+    
+    Keyword arguments:
+        
+    frame_i (int) -- the index of the i-th frame 
+    """
     
         
     vel_cum_count = np.sum(self.vel_count[0:frame_i + 1], axis = 0)/(frame_i + 1)
@@ -91,6 +121,18 @@ def gas_animation_pbc(
         fps: int, 
         dpi: int
         ) -> None:
+    
+    """
+    Generates the animations of the gas with periodic boundary 
+    conditions and saves as a .mp4 file.
+
+    Keyword arguments:
+        
+    exit_file_name (str) -- exit file name
+    fps (int) -- frames per second
+    dpi (float) -- dots per inch 
+    
+    """
 
     fig = plt.figure()
     ax = plt.axes(xlim = (0., self.box_width), ylim = (0., self.box_width))
@@ -133,6 +175,18 @@ def gas_animation_bhw(
         fps: int, 
         dpi: int
         ) -> None:
+    
+    """
+    Generates the animations of the gas with bottom 
+    hard wall boundary conditions and saves as a .mp4 file.
+
+    Keyword arguments:
+        
+    exit_file_name (str) -- exit file name
+    fps (int) -- frames per second
+    dpi (float) -- dots per inch 
+    
+    """
 
     x_wall = np.array([i*self.box_width/10. for i in range(11)])
 
@@ -182,6 +236,16 @@ def vel_distribution_animation(
         self, 
         exit_file_name: str
         ) -> None:
+    
+    """
+    Generates the animations of the velocity distribution 
+    as an histogram and saves as a .mp4 file.
+
+    Keyword arguments:
+        
+    exit_file_name (str) -- exit file name
+
+    """
 
     fig, ax= plt.subplots()
     ax.set(xlim = (0, self.vel_bins.max()), ylim = (0, 1.05*(self.vel_count[self.total_time_steps - 1].max())))
