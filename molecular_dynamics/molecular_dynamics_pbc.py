@@ -145,7 +145,7 @@ class MolecularDynamicsPBC(object):
     def generate_gas_animation(
         self, 
         exit_file_name: str = "molecular_dynamics.mp4",
-        track_brownian_particle: bool = True,
+        track_brownian_particles: bool = True,
         fps: Union[float, int] = 50, 
         dpi: Union[float, int] = 150
         ):
@@ -155,7 +155,7 @@ class MolecularDynamicsPBC(object):
                 "Error: 'generate_dynamics' must be called before 'generate_gas_animation' is called."
             )
     
-        self.track_brownian_particle_flag = track_brownian_particle
+        self.track_brownian_particles_flag = track_brownian_particles
         
         return gas_animation_pbc(
             self, 
