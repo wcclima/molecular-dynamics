@@ -53,6 +53,7 @@ class MolecularDynamicsBHW(object):
         self.dynamics_flag = False
         self.vel_dist_flag = False
         self.measured_kT_flag = False
+        self.track_brownian_particles_flag = False
 
         self.gas_state = None
         self.brownian_particles_state = None
