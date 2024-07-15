@@ -97,6 +97,10 @@ https://github.com/user-attachments/assets/18ccdbdc-1170-41d9-94cf-b7f28cb122be
 
 https://github.com/user-attachments/assets/a7f33c2c-20d8-4213-b7f9-9396ca03ad4d
 
+- Animation velocity modulus distribution of the above gas. The distribution is averaged over time to mitigate statistical fluctuations. The gas temperature at the final equilibrium is $kT = 0.08$.
+
+https://github.com/user-attachments/assets/5148378c-a085-4a0d-871f-3232b0149ed3
+
 
 ## 6 - References
 
