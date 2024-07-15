@@ -146,7 +146,7 @@ def measure_kT(
         plt.plot(self.vel_bins, fitted_vel_count)
         plt.show()
 
-    elif method == "cummulative fitting":
+    elif method == "cumulative fitting":
 
         cum_vel_count = np.mean(self.vel_count, axis = 0)
         remove_zeros_mask = cum_vel_count > 0.
