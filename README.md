@@ -77,22 +77,25 @@ Description of the module `molecular_dynamics` architecture.
 
 ## 5 - Results
 
-- Animation of a gas of density $\rho = 0.25$ in a box with side $L = 20$ and initial velocity with $\langle v^2_x\rangle = \langle v^2_y\rangle = 100$. PBCs, time step $\Delta t = 0.005$ and $50000$ total time steps were assumed. 
+- Animation of a gas of density $\rho = 0.25$ in a box with side $L = 20$ and initial temperature $kT = 1.0$. PBCs, time step $\Delta t = 0.005$ and $25000$ total time steps were assumed. 
 
-https://github.com/user-attachments/assets/5a091d87-6e5f-4160-8818-44afe17d7e01
+https://github.com/user-attachments/assets/31fbce9d-a001-45a4-bc57-bce9ad338343
 
-- Animation velocity modulus distribution of the above gas. The distribution is averaged over time to mitigate statistical fluctuations. The gas temperature at the equilibrium is $kT = 1.25$.
+- Animation velocity modulus distribution of the above gas. The distribution is averaged over time to mitigate statistical fluctuations. The gas temperature at the equilibrium is $kT = 1.4$.
 
-https://github.com/user-attachments/assets/0a834874-5fd1-4d25-b90a-fa9deaceb0dc
+https://github.com/user-attachments/assets/518299d8-eef9-457f-b843-d9a19f1fd06a
 
-- Animation of a gas of density $\rho = 0.25$ in a box with side $L = 20$ and initial velocity with $\langle v^2_x\rangle = \langle v^2_y\rangle = 100$, with a Brownian particle of mass $15.$ and size $\sigma = 1.8$. PBCs, time step $\Delta t = 0.005$ and $50000$ total time steps were assumed. 
+- Animation of a gas of density $\rho = 0.25$ in a box with side $L = 20$ and initial temperature $kT = 8.0$, with a Brownian particle of mass $15.$ and size $\sigma = 1.8$. PBCs, time step $\Delta t = 0.005$ and $25000$ total time steps were assumed. 
 
-https://github.com/user-attachments/assets/1b485cd3-3756-4213-95b5-aede1670d613
+https://github.com/user-attachments/assets/d3ac9b23-0b98-4a65-904b-88848098d64c
 
-- Animation of a gas of density $\rho = 0.25$ in a box with side $L = 20$ and initial velocity with $\langle v^2_x\rangle = \langle v^2_y\rangle = 100$. BHW boundary conditions, gravitational acceleration $g = 0.5$, time step $\Delta t = 0.005$ and $50000$ total time steps were assumed.
+- Animation of a gas of density $\rho = 0.25$ in a box with side $L = 20$ and initial temperature $kT = 1.0$. BHW boundary conditions, gravitational acceleration $g = 0.5$, time step $\Delta t = 0.005$ and $25000$ total time steps were assumed. The gas temperature at the equilibrium is $kT = 2.4$.
 
-https://github.com/user-attachments/assets/d9c7882a-78d2-4929-ad08-d90b95e58ea0
+https://github.com/user-attachments/assets/18ccdbdc-1170-41d9-94cf-b7f28cb122be
 
+- Animation of a gas of density $\rho = 0.64$ in a box with side $L = 20$ and initial temperature $kT = 1.0$ and then lowered to $kT = 5\times 10^{-4}$ using the `change_temperature` method. PBC boundary conditions, time step $\Delta t = 0.005$ and $16000$ total time steps were assumed.
+
+https://github.com/user-attachments/assets/a7f33c2c-20d8-4213-b7f9-9396ca03ad4d
 
 
 ## 6 - References
