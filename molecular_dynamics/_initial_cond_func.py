@@ -7,25 +7,28 @@ from numpy import random
 def gaussian_random_array(
         shape: Union[int, tuple],
         trials: int,
+        std: float
         ) -> np.ndarray:
 
     """
     Returns a numpy array that is an approximate random 
     Gaussian variable with zero mean and elements in the 
-    range [-0.5, 0.5].
+    range [-a/2, a/2], with a = sqrt(12 * trials) * std.
 
     Keyword arguments:
 
-    shape (int, tuple) -- the shape of the array
+    shape (int, tuple) -- the shape of the array. 
     trials (int) -- length of the random sequence
-    
+    std (float) -- standard deviation of the random sequence
+
     """
+    a = np.sqrt(12.*trials)*std
     s = np.zeros(shape)
     
     for i in range(trials):
-        s += np.random.rand(shape)
+        s += a*np.random.rand(shape)
     
-    return s/trials - 0.5
+    return s/trials - 0.5*a
 
 def generate_initial_conditions(
         self, 
@@ -55,8 +58,8 @@ def generate_initial_conditions(
         self.gas_molecules_index.remove(bp_index)
         self.brownian_particles_index.append(bp_index)
 
-    vx = 12.*gaussian_random_array(self.n_molecules, 12)*np.sqrt(self.initial_temperature)
-    vy = 12.*gaussian_random_array(self.n_molecules, 12)*np.sqrt(self.initial_temperature)
+    vx = gaussian_random_array(self.n_molecules, 12, 1.)*np.sqrt(self.initial_temperature)
+    vy = gaussian_random_array(self.n_molecules, 12, 1.)*np.sqrt(self.initial_temperature)
     
     cell_array = np.linspace(
         0.5*self.cell_size, 
