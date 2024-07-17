@@ -10,9 +10,8 @@ The goal of this project is to simulate a gas by modelling its molecules as clas
 **`fortran_codes/`: Older version of the model**
 
 **`notebooks/`: Notebooks demonstrating the simulations**
-- `molecular_dynamics_notebook.ipynb` : Notebook explaining the basic details of the simulation
-- `brownian_motion_notebook.ipynb` : Notebook discussing the Brownian motion implementation
-- `bottom_hard_wall_notebook.ipynb` : Notebook discussing the implementation of the bottom-hard-wall boundary condition
+- `MolecularDynamicsPBC.ipynb` : Notebook explaining the basic details of the simulation with periodic boundary conditions (PBC)
+- `MolecularDynamicsBHW.ipynb` : Notebook explaining the basic details of the simulation with bottom hard wall conditions (BHW)
 
 **`molecular_dynamics/`: Molecular dynamics module**
 
@@ -38,8 +37,9 @@ Description of the module `molecular_dynamics` architecture.
   -  `generate_velocity_distribution`, requires functions from `_stats_methods.py`;
   -  `generate_velocity_distribution_animation`, requires functions from `_animation_methods.py`;
   -  `measure_kT`, requires functions from `_stats_methods.py`;
-  -  `change_temperature`, requires functions from `_thermostat.py`.
-- `molecular_dynamics/molecular_dynamics_bhw.py`: defines the MolecularDynamicsBHW class with the same methods as above.
+  -  `change_temperature`, requires functions from `_thermostat.py`
+  -  `measure_pressure`, requires `_pression_func.py`.
+- `molecular_dynamics/molecular_dynamics_bhw.py`: defines the MolecularDynamicsBHW class with the same methods as above, except for `measure_pressure`.
 - `molecular_dynamics/_animation_func.py`: functions producing the animations of the gas moviment and the velocity histogram, used in the `generate_gas_animation` and `generate_velocity_distribution_animation` methods.
 - `molecular_dynamics/_compute_forces_func.py`: functions computing the molecules pairwise total forces and the bottom hard wall forces, used in the `plot_initial_forces` method and in `_n_body_dynamics.py` functions.
 - `molecular_dynamics/_initial_cond_func.py`: function generating the molecules's initial conditions, used in the `generate_initial_conditions` method. 
@@ -47,6 +47,7 @@ Description of the module `molecular_dynamics` architecture.
 - `molecular_dynamics/_plot_func.py`: functions generating the plots, used in the `plot_initial_conditions` and `plot_initial_forces` methods.
 - `molecular_dynamics/_stats_func.py`: functions implementing the temperature measurement by generating the velocity distribution and fitting it with the Maxwell-Boltzmann distribution or using the equipartition theorem, used in the `measure_kT` and `generate_velocity_distribution` methods.
 - `molecular_dynamics/_thermostat_func.py`: functions that instantaneously change the molecules's velocities, thus changing the gas temperature after interation, used in the `change_temperature` method.
+- `molecular_dynamics/_pression_func.py`: function that measures the pressure exerted by the molecules over an imaginary perfectly reflective hard wall in the PBC case, used in the `measure_pressure` method of the `MolecularDynamicsPBC` class.
 
 ## 4 - Features
 
