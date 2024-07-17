@@ -22,10 +22,10 @@ def init_state(self) -> Figure:
     """
 
     x_coord, y_coord = self.data[0][0:2]
-    self.gas_state.set_data([x_coord[self.gas_molecules_index], y_coord[self.gas_molecules_index]])
-    self.brownian_particles_state.set_data([x_coord[self.brownian_particles_index], y_coord[self.brownian_particles_index]])
+    self._gas_state.set_data([x_coord[self.gas_molecules_index], y_coord[self.gas_molecules_index]])
+    self._brownian_particles_state.set_data([x_coord[self.brownian_particles_index], y_coord[self.brownian_particles_index]])
     
-    return self.gas_state, self.brownian_particles_state
+    return self._gas_state, self._brownian_particles_state
 
 
 def mask_periodic_plot(
@@ -77,18 +77,18 @@ def animate_gas(
     """
 
     x_coord, y_coord = self.data[frame_i][0:2]
-    self.gas_state.set_data(x_coord[self.gas_molecules_index], y_coord[self.gas_molecules_index])
-    self.brownian_particles_state.set_data([x_coord[self.brownian_particles_index], y_coord[self.brownian_particles_index]])
+    self._gas_state.set_data(x_coord[self.gas_molecules_index], y_coord[self.gas_molecules_index])
+    self._brownian_particles_state.set_data([x_coord[self.brownian_particles_index], y_coord[self.brownian_particles_index]])
 
-    if self.track_brownian_particles_flag:
+    if self._track_brownian_particles_flag:
         for brownian_particle_i in range(self.n_brownian_particles):
             x_bm_track = self.data.T[self.brownian_particles_index[brownian_particle_i]][0][[i for i in range(frame_i + 1)]]
             y_bm_track = self.data.T[self.brownian_particles_index[brownian_particle_i]][1][[i for i in range(frame_i + 1)]]
             x_bm_track, y_bm_track = mask_periodic_plot(x_bm_track, y_bm_track)
     
-            self.brownian_motion_track[brownian_particle_i].set_data(x_bm_track, y_bm_track)
+            self._brownian_motion_track[brownian_particle_i].set_data(x_bm_track, y_bm_track)
     
-    return self.gas_state, self.brownian_particles_state, self.brownian_motion_track
+    return self._gas_state, self._brownian_particles_state, self._brownian_motion_track
 
 
 def animate_vel_distribution(
@@ -109,10 +109,10 @@ def animate_vel_distribution(
     
         
     vel_cum_count = np.sum(self.vel_count[0:frame_i + 1], axis = 0)/(frame_i + 1)
-    for bar, height in zip(self.vel_hist, vel_cum_count[::10]):
+    for bar, height in zip(self._vel_hist, vel_cum_count[::10]):
         bar.set_height(height)
         
-    return self.vel_hist
+    return self._vel_hist
     
 
 def gas_animation_pbc(
@@ -136,7 +136,7 @@ def gas_animation_pbc(
 
     fig = plt.figure()
     ax = plt.axes(xlim = (0., self.box_width), ylim = (0., self.box_width))
-    self.gas_state, = ax.plot([], [], 
+    self._gas_state, = ax.plot([], [], 
                               marker = "o", 
                               linestyle = " ", 
                               markerfacecolor = "cornflowerblue", 
@@ -144,7 +144,7 @@ def gas_animation_pbc(
                               markersize=5
                               )
 
-    self.brownian_particles_state, = ax.plot([], [], 
+    self._brownian_particles_state, = ax.plot([], [], 
                                             marker = "o", 
                                             linestyle = " ", 
                                             markerfacecolor = "orange", 
@@ -152,7 +152,7 @@ def gas_animation_pbc(
                                             markersize=9
                                             )
 
-    self.brownian_motion_track = [ax.plot([], [], color = "tan")[0] for _ in range(self.n_brownian_particles)]
+    self._brownian_motion_track = [ax.plot([], [], color = "tan")[0] for _ in range(self.n_brownian_particles)]
 
     molecular_dynamics_animation = animation.FuncAnimation(
         fig = fig, 
@@ -199,7 +199,7 @@ def gas_animation_bhw(
         y_aux = 2.*x_aux - 2.*(0.5*i + 1)
         plt.plot(x_aux, y_aux, ":k")
 
-    self.gas_state, = ax.plot([], [], 
+    self._gas_state, = ax.plot([], [], 
                               marker = "o", 
                               linestyle = " ", 
                               markerfacecolor = "cornflowerblue", 
@@ -207,7 +207,7 @@ def gas_animation_bhw(
                               markersize=5
                               )
 
-    self.brownian_particles_state, = ax.plot([], [], 
+    self._brownian_particles_state, = ax.plot([], [], 
                                             marker = "o", 
                                             linestyle = " ", 
                                             markerfacecolor = "orange", 
@@ -215,7 +215,7 @@ def gas_animation_bhw(
                                             markersize=9
                                             )
 
-    self.brownian_motion_track = [ax.plot([], [], color = "tan")[0] for _ in range(self.n_brownian_particles)]
+    self._brownian_motion_track = [ax.plot([], [], color = "tan")[0] for _ in range(self.n_brownian_particles)]
 
     molecular_dynamics_animation = animation.FuncAnimation(
         fig = fig, 
@@ -252,7 +252,7 @@ def vel_distribution_animation(
     plt.title("Distribution of the molecules's velocity modulus")
     plt.xlabel("velocity")
     plt.ylabel("density")
-    self.vel_hist = ax.bar(
+    self._vel_hist = ax.bar(
         x = self.vel_bins[::10], 
         height = np.empty(len(self.vel_bins[::10])), 
         width = 0.085,
