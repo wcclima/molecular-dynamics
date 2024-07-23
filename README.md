@@ -68,6 +68,7 @@ Description of the module `molecular_dynamics` architecture.
       - `instantaneous fitting`, which fits the velocity distribution at the final time step with the Maxwell-Boltzmann distribution,
       - `cummulative_fitting`, which fits the time averaged velocity distribution at the final time step with the Maxwell-Boltzmann distribution,
       - `equipartition`, which computes the average kinetic energy and used the equipartition theorem to determine the temperature;
+    - `measure_pressure`, which computes the pressure of the gas and plots its profile over time;
     - `change_temperature`, changes the gas temperature by rescaling the velocity at the current final time step, generating a new dynamics from there and them concatenating the result with the gas past history.
 
 - The `Molecular_DynamicsBHW` class:
