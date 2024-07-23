@@ -2,7 +2,24 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def measure_pressure(self):
+from ._stats_func import time_average_func
+
+
+def measure_pressure(
+        self, 
+        average_window: int
+        ):
+    
+    """
+    Computes the pressure exerted by the molecules on a virtual perfectly 
+    refletive wall.
+
+    
+    Keyword arguments:
+
+        average_window (int):
+            The time average window in time steps.
+    """
 
     pressure = np.zeros(self.total_time_steps)
 
@@ -17,16 +34,17 @@ def measure_pressure(self):
         if position_mask.sum() != 0:
             pressure[step_i] = np.mean(np.abs(vx[position_mask]))/(self.time_step*self.box_width)
 
-    self.mean_pressure = np.cumsum(pressure)/np.arange(1,self.total_time_steps + 1)
 
-    print(f"Average pressure after {self.total_time_steps}: {self.mean_pressure.mean()}")
+    self.pressure_averaged = np.empty(self.total_time_steps)
+
+    for step_i in range(self.total_time_steps):
+        self.pressure_averaged[step_i] = time_average_func(pressure, average_window, step_i)
+
+    print(f"Average pressure after {self.total_time_steps}: {self.pressure_averaged[-1]}")
 
     fig = plt.figure(dpi = 150)
     plt.title("Pressure vs. time steps")
     plt.xlabel("time step")
     plt.ylabel("mean pressure")
-    plt.plot(np.arange(self.total_time_steps), self.mean_pressure)
-    plt.plot(np.arange(self.total_time_steps), pressure)
-    plt.plot(np.arange(self.total_time_steps), np.array([self.mean_pressure.mean() for i in range(self.total_time_steps)]), 'k:')
-
+    plt.plot(np.arange(self.total_time_steps), self.pressure_averaged)
     
