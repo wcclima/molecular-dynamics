@@ -107,4 +107,5 @@ https://github.com/user-attachments/assets/5148378c-a085-4a0d-871f-3232b0149ed3
 ## 6 - References
 
 1. N. J. Giordano and H Nakanishi, *Computational Physics* (Pearson Prentice Hall, New Jersey, 2006).
-2. R.H. Landau, M.J. Páez and C.C. Bordeianu, *Computation Physics: Problem Solving with Python* (Wiley-VCH, Weinheim, 2015). 
+2. R.H. Landau, M.J. Páez and C.C. Bordeianu, *Computation Physics: Problem Solving with Python* (Wiley-VCH, Weinheim, 2015).
+3. M. S. Harish and P. K. Patra, Temperature and its control in molecular dynamics simulations, [arXiv:2006.02327](https://arxiv.org/abs/2006.02327). 
