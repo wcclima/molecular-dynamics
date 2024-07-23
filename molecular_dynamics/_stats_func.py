@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 
 from sklearn.linear_model import LinearRegression
 
+from typing import Optional
+
 class WrongTemperatureMeasurementMethod(Exception):
     def __init__(self, message):
         super().__init__(message)
@@ -77,16 +79,17 @@ def vel_distribution(
     
     bins (int) -- number of histogram bins
     bin_size (float) -- size of the histogram bins
+    smoothing_window (int) -- size of the smoothing window, in steps
     """
 
-    self.vel_bins = np.array([i*bin_size + 0.5*bin_size for i in range(bins)])
-    self.vel_count = np.empty((self.total_time_steps, bins))
-    v_count = np.zeros(bins)
+    self._vel_bins = np.array([i*bin_size + 0.5*bin_size for i in range(bins)])
+    self._vel_frac_count = np.empty((self.total_time_steps, bins))
+    v_frac_count = np.zeros(bins)
 
     for frame_i in range(self.total_time_steps):
         vx, vy = self.data[frame_i][2:4]
 
-        v_count = velocity_modulus_fractional_count(
+        v_frac_count = velocity_modulus_fractional_count(
             vx[self.gas_molecules_index], 
             vy[self.gas_molecules_index], 
             self.n_gas_molecules, 
@@ -94,12 +97,28 @@ def vel_distribution(
             bin_size
         )
 
-        self.vel_count[frame_i] = v_count
+        self._vel_frac_count[frame_i] = v_frac_count
+
+
+def time_average_func(
+        a: np.ndarray,
+        average_window: int,
+        frame_i: int
+        ):
+
+    window_size = np.min([average_window, frame_i + 1])
+
+    a_averaged = np.sum(a[frame_i + 1 - window_size:frame_i + 1], axis = 0)
+    a_averaged = a_averaged/window_size
+
+
+    return a_averaged
 
 
 def measure_kT(
         self, 
-        method: str
+        method: str,
+        average_window: Optional[int]
         ) -> None:
     """
     Computes the value of k times the temperature,
@@ -111,65 +130,65 @@ def measure_kT(
     computing the instantaneous average kinectic 
     energy ans using the equipartition theorem. 
 
-    Returns the value value of kT (float).
 
     Keyword arguments:
-    
-    method (str) -- the kT measurement method:
-    'instantaneous fitting', 'cumulative fitting' 
-    and 'equipartition'.
+        method (str, values = ['instantaneous fitting', 'averaged fitting', 'equipartition']): 
+            The kT measurement method.
+
+        average_window (int, optional):
+            The size of the time average window when method is 'averaged fitting'. 
 
     """
 
         
     if method == "instantaneous fitting":
-        remove_zeros_mask = self.vel_count[-1] > 0.
+        remove_zeros_mask = self._vel_frac_count[-1] > 0.
 
-        X = (self.vel_bins[remove_zeros_mask]**2).reshape(-1,1)
-        y = np.log((self.vel_count[-1]/self.vel_bins)[remove_zeros_mask])
+        X = (self._vel_bins[remove_zeros_mask]**2).reshape(-1,1)
+        y = np.log((self._vel_frac_count[-1]/self._vel_bins)[remove_zeros_mask])
 
         lin_reg = LinearRegression()
         lin_reg.fit(X,y)
         lin_reg.coef_, lin_reg.intercept_ 
 
-        dv = 2.*self.vel_bins[0]
+        dv = 2.*self._vel_bins[0]
 
         self.average_kT = 0.5*(np.exp(-lin_reg.intercept_)*dv - 1/(2.*lin_reg.coef_[0]))
 
         print(f"Measured kT after {self.total_time_steps} steps from fitting: {self.average_kT}")
         print(" ")
 
-        fitted_vel_count = -2.*lin_reg.coef_[0]*self.vel_bins*np.exp(lin_reg.coef_[0]*self.vel_bins**2)*dv
+        fitted_vel_frac_count = -2.*lin_reg.coef_[0]*self._vel_bins*np.exp(lin_reg.coef_[0]*self._vel_bins**2)*dv
 
         fig, ax = plt.subplots(dpi = 150)
-        plt.plot(self.vel_bins, self.vel_count[-1])
-        plt.plot(self.vel_bins, fitted_vel_count)
+        plt.plot(self._vel_bins, self._vel_frac_count[-1])
+        plt.plot(self._vel_bins, fitted_vel_frac_count)
         plt.show()
 
-    elif method == "cumulative fitting":
+    elif method == "averaged fitting":
 
-        cum_vel_count = np.mean(self.vel_count, axis = 0)
-        remove_zeros_mask = cum_vel_count > 0.
+        vel_dist_averaged = time_average_func(self._vel_frac_count, average_window, self.total_time_steps)
+        remove_zeros_mask = vel_dist_averaged > 0.
 
-        X = (self.vel_bins[remove_zeros_mask]**2).reshape(-1,1)
-        y = np.log((cum_vel_count/self.vel_bins)[remove_zeros_mask])
+        X = (self._vel_bins[remove_zeros_mask]**2).reshape(-1,1)
+        y = np.log((vel_dist_averaged/self._vel_bins)[remove_zeros_mask])
 
         lin_reg = LinearRegression()
         lin_reg.fit(X,y)
         lin_reg.coef_, lin_reg.intercept_ 
 
-        dv = 2.*self.vel_bins[0]
+        dv = 2.*self._vel_bins[0]
 
         self.average_kT = 0.5*(np.exp(-lin_reg.intercept_)*dv - 1/(2.*lin_reg.coef_[0]))
 
         print(f"Measured kT after {self.total_time_steps} steps from fitting: {self.average_kT}")
         print(" ")
 
-        fitted_vel_count = -2.*lin_reg.coef_[0]*self.vel_bins*np.exp(lin_reg.coef_[0]*self.vel_bins**2)*dv
+        vel_dist_fitted = -2.*lin_reg.coef_[0]*self._vel_bins*np.exp(lin_reg.coef_[0]*self._vel_bins**2)*dv
 
         fig, ax = plt.subplots(dpi = 150)
-        plt.plot(self.vel_bins, cum_vel_count)
-        plt.plot(self.vel_bins, fitted_vel_count)
+        plt.plot(self._vel_bins, vel_dist_averaged)
+        plt.plot(self._vel_bins, vel_dist_fitted)
         plt.show()
 
     elif method == "equipartition":
