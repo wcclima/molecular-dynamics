@@ -8,6 +8,8 @@ from matplotlib import animation
 from matplotlib.animation import FuncAnimation
 from matplotlib.figure import Figure
 
+from ._stats_func import time_average_func
+
 import functools
 
 import warnings
@@ -93,6 +95,7 @@ def animate_gas(
 
 def animate_vel_distribution(
         self,
+        average_window: int,
         frame_i: int
         ) -> Figure:
     """
@@ -108,8 +111,9 @@ def animate_vel_distribution(
     """
     
         
-    vel_cum_count = np.sum(self.vel_count[0:frame_i + 1], axis = 0)/(frame_i + 1)
-    for bar, height in zip(self._vel_hist, vel_cum_count[::10]):
+    vel_dist_averaged = time_average_func(self._vel_frac_count, average_window, frame_i)
+    
+    for bar, height in zip(self._vel_hist, vel_dist_averaged[::10]):
         bar.set_height(height)
         
     return self._vel_hist
@@ -234,7 +238,8 @@ def gas_animation_bhw(
 
 def vel_distribution_animation(
         self, 
-        exit_file_name: str
+        exit_file_name: str,
+        average_window: int
         ) -> None:
     
     """
@@ -248,20 +253,20 @@ def vel_distribution_animation(
     """
 
     fig, ax= plt.subplots()
-    ax.set(xlim = (0, self.vel_bins.max()), ylim = (0, 1.05*(self.vel_count[self.total_time_steps - 1].max())))
+    ax.set(xlim = (0, self._vel_bins.max()), ylim = (0,1.1/self.n_gas_molecules))
     plt.title("Distribution of the molecules's velocity modulus")
     plt.xlabel("velocity")
     plt.ylabel("density")
     self._vel_hist = ax.bar(
-        x = self.vel_bins[::10], 
-        height = np.empty(len(self.vel_bins[::10])), 
+        x = self._vel_bins[::10], 
+        height = np.empty(len(self._vel_bins[::10])), 
         width = 0.085,
         color = "cornflowerblue"
         )
 
     vel_dist_animation = animation.FuncAnimation(
         fig = fig, 
-        func = functools.partial(animate_vel_distribution, self), 
+        func = functools.partial(animate_vel_distribution, self, average_window), 
         frames = [i for i in range(self.total_time_steps)][::10]
         )
         
