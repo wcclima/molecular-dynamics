@@ -66,7 +66,7 @@ Description of the module `molecular_dynamics` architecture.
     - `generate_velocity_distribution_animation`, animates the molecules velocity distribution averaged over time;
     - `measure_kT`, allows three different methods to measure the gas temperature,
       - `instantaneous fitting`, which fits the velocity distribution at the final time step with the Maxwell-Boltzmann distribution,
-      - `cummulative_fitting`, which fits the time averaged velocity distribution at the final time step with the Maxwell-Boltzmann distribution,
+      - `averaged_fitting`, which fits the time averaged velocity distribution at the final time step with the Maxwell-Boltzmann distribution,
       - `equipartition`, which computes the average kinetic energy and used the equipartition theorem to determine the temperature;
     - `measure_pressure`, which computes the pressure of the gas and plots its profile over time;
     - `change_temperature`, changes the gas temperature by rescaling the velocity at the current final time step, generating a new dynamics from there and them concatenating the result with the gas past history.
@@ -75,7 +75,7 @@ Description of the module `molecular_dynamics` architecture.
   - generates a bi-dimensional gas with periodic boundary conditions on the x-direction and a bottom hard wall and an open top end in the y-direction;
   - it accepts one or two molecule species, with the mass and size of the second species scaled with respect to the first species;
   - it allows for gravitational acceleration.
-  - It has the same methods as the `Molecular_DynamicsPBC` class. 
+  - It has the same methods as the `Molecular_DynamicsPBC` class, except for the `measure_pressure` method. 
 
 ## 5 - Results
 
