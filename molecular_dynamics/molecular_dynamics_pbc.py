@@ -93,23 +93,23 @@ class MolecularDynamicsPBC(object):
             modulus distribution of the gas molecules for each time 
             step. 
 
-        generate_velocity_distribution_animation(exit_file_name):
+        generate_velocity_distribution_animation(exit_file_name, average_window):
             Generates the animation of the velocity modulus histograms
             for the gas molecules. It saves the animation in the mp4 format.
 
-        measure_kT(method):
+        measure_kT(method, average_window):
             Measures the gas temperature by either fitting the velocity 
             distribution with the Maxwell-Boltzmann distribution for the
             velocity modulus or by computing the kinectic energy average
             and usinging the equipartition theorem.
 
-        measure_pressure():
+        measure_pressure(average_window):
             Measures the pressure exerted by the gas molecules on an
             imaginary perfectly reflective wall.
 
         change_temperature():
             Changes the gas molecules temperature by rescalling the 
-            molecule's velocityand evolving the system until the new 
+            molecule's velocity and evolving the system until the new 
             equilibrium is reached.
 
     """
@@ -248,7 +248,7 @@ class MolecularDynamicsPBC(object):
 
     def plot_initial_conditions(
             self
-            ) -> None:
+            ):
         """
         Plots the initial positions and velocities of the 
         particles in system, including the gas molecules
@@ -294,7 +294,7 @@ class MolecularDynamicsPBC(object):
     def generate_dynamics(
         self, 
         total_time_steps: int
-        ) -> None:
+        ):
         """
         Generates the gas molecules and Brownian 
         particles (if any) dynamics according to 
@@ -370,12 +370,10 @@ class MolecularDynamicsPBC(object):
             self, 
             bins: int = 500, 
             bin_size: float = 1e-2
-            ) -> None:
+            ):
         """
         Generates the velocity modulus distribution as 
-        a histogram for each time step. The histogram 
-        at step i is averaged over time up to the step 
-        i to minimize statistical fluctuations.
+        a histogram for each time step.
 
         Keyword arguments:
             bins (int, default = 500):
@@ -411,8 +409,11 @@ class MolecularDynamicsPBC(object):
     
         """
         Generates the animation of the velocity modulus 
-        distribution of the gas molecules as a histogram. 
-        It saves the animation in the mp4 format.
+        distribution of the gas molecules as a histogram.
+        The frames generated from the velocity modulus 
+        distribution histogram histograms averaged over time,
+        up to a certain number of past time steps set by 
+        average_widow. It saves the animation in the mp4 format. 
 
         Keyword arguments:
             exit_file_name (str, default = "velocity_distribution.mp4"):
@@ -458,9 +459,12 @@ class MolecularDynamicsPBC(object):
         - averaged fitting: Fits the time averaged velocity 
         modulus distribution at the last time step with the 
         Maxwell-Boltzmann distribution after a log-log
-        transformation. The method returns the kT as the 
+        transformation. The time average is perfomed by averaging 
+        the velocity histograms for up to a certain time window 
+        set by average_window parameter and ending at the 
+        current time step. The method returns the kT as the 
         average values between the constant and slope 
-        regression coefficientsand the plots of the velocity 
+        regression coefficients the plots of the velocity 
         distribution and the corresponding fitted curve.
 
         - equipartition: Computes the average kinetic energy 
@@ -534,7 +538,6 @@ class MolecularDynamicsPBC(object):
             new_temperature: float, 
             extra_time_steps: int
             ):
-
         """
         Changes the temperature of the gas molecules 
         by rescaling their velocities by a factor 
