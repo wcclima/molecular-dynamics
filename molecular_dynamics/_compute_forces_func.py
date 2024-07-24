@@ -94,7 +94,10 @@ def bottom_wall_force(
         y_coord: np.ndarray
         ) -> Tuple[np.ndarray, np.ndarray]:
     
-    x_wall_cells = np.array([i*self.box_width/50 for i in range(50)])
+    d = 0.4 #distance bewteen the particles in the wall
+    n_wall_particles = int(self.box_width/d) 
+
+    x_wall_cells = np.array([i*d for i in range(n_wall_particles)])
     force_wall_x = np.zeros(self.n_molecules)
     force_wall_y = np.zeros(self.n_molecules)
     
